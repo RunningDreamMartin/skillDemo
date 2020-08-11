@@ -1,0 +1,67 @@
+spring:
+    mvc:
+      servlet:
+          load-on-startup: 100
+    servlet:
+        multipart:
+#            location: /data/app
+            enabled: true
+            max-file-size: 20MB
+            max-request-size: 20MB
+    datasource:
+        url: jdbc:mysql://10.2.62.27/tot3?serverTimezone=UTC
+        username: root
+        password: 2020
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    thymeleaf:
+        prefix: classpath:/templates/
+    redis:
+        host: 10.2.62.27
+        port: 6379
+        password: 2020
+        #密码为空
+        timeout: 10000
+        database: 0
+        jedis:
+             pool:
+                max-idle: 1000
+                max-active: 1024
+                min-idle: 1000
+                max-wait: 10000
+
+
+    jackson:
+        time-zone: Asia/Shanghai
+        date-format: "yyyy-MM-dd HH:mm:ss"
+        serialization:
+            write-dates-as-timestamps: true
+#        mvc:
+#            static-path-pattern: /**
+#        resources:
+#            static-locations: classpath:/classes/static
+mybatis:
+    type-aliases-package: com.glodon.demo.domain
+    mapper-locations: classpath:mapper/*.xml
+    configuration:
+        map-underscore-to-camel-case: true  # 开启驼峰命名
+
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+
+#server:
+#  tomcat:
+#      uri-encoding: utf-8
+#      threads:
+#          max: 1000
+#      max-connections: 20000
+server:
+  undertow:
+      direct-buffers: true
+      threads:
+          io: 12
+          worker: 1000
+      buffer-size: 1024
+      no-request-timeout: 10000

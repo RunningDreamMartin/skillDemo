@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.glodon.demo.dao.CommodityDao">
+  <resultMap id="BaseResultMap" type="com.glodon.demo.domain.Commodity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="market_price" jdbcType="DECIMAL" property="marketPrice" />
+    <result column="sec_price" jdbcType="DECIMAL" property="secPrice" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, `name`, market_price, sec_price, start_time, end_time, stock, description, 
+    `status`, image
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from commodity
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getStockById" resultType="java.lang.Integer">
+    select stock
+    from commodity
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getIdByCode" resultType="java.lang.Integer">
+    select id from commodity where code=#{code}
+  </select>
+
+  <select id="selectExists" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from commodity
+    where status = #{status,jdbcType=INTEGER}
+  </select>
+
+  <select id="getStatusById" resultType="java.lang.Integer"  >
+    select status
+    from commodity
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getStatusByIdList" resultType="java.lang.Integer">
+    select status
+    from commodity
+    where id =
+    <foreach collection="idList" item="id" index="index"
+             open="(" close=")" separator=",">
+      ##{id,jdbcType=INTEGER}
+    </foreach>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from commodity
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.glodon.demo.domain.Commodity" useGeneratedKeys="true">
+    insert into commodity (code, `name`, market_price, 
+      sec_price, start_time, end_time, 
+      stock, description, `status`, 
+      image)
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, 
+      #{secPrice,jdbcType=DECIMAL}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{stock,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{image,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.glodon.demo.domain.Commodity" useGeneratedKeys="true">
+    insert into commodity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="marketPrice != null">
+        market_price,
+      </if>
+      <if test="secPrice != null">
+        sec_price,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="stock != null">
+        stock,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null">
+        #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="secPrice != null">
+        #{secPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.glodon.demo.domain.Commodity">
+    update commodity
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="marketPrice != null">
+        market_price = #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="secPrice != null">
+        sec_price = #{secPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stock != null">
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.glodon.demo.domain.Commodity">
+    update commodity
+    set code = #{code,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      market_price = #{marketPrice,jdbcType=DECIMAL},
+      sec_price = #{secPrice,jdbcType=DECIMAL},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      stock = #{stock,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      image = #{image,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="findAll" resultType="com.glodon.demo.domain.Commodity">
+    select * from commodity
+  </select>
+
+  <select id="selectPage"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from commodity
+  </select>
+
+  <select id="queryAllCodes" resultType="java.lang.String">
+    select code from commodity
+  </select>
+
+  <select id="queryCommodity" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from commodity
+    <where>
+      <if test="code!=null and code!=''">
+        code = #{code}
+      </if>
+      <if test="name!=null and name!=''">
+        and name LIKE #{name}
+      </if>
+      <if test="status!=null ">
+        and status = #{status}
+      </if>
+    </where>
+  </select>
+  <update id="updateStatusById" parameterType="java.lang.Integer">
+       update commodity
+    set
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+    </update>
+  <update id="updateStockById" parameterType="java.lang.Integer">
+     update commodity
+    set
+      stock = #{stock,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateStatusByIdList" parameterType="java.util.List">
+    update commodity
+    set
+    stock = #{stock,jdbcType=INTEGER}
+    where id in
+    <foreach item="id" collection="idList"  open="in(" separator= "," close= ")">
+      #{id, jdbcType=INTEGER}
+    </foreach>
+  </update>
+</mapper>
